@@ -11,6 +11,7 @@ const Header: React.FC = () => {
     { name: 'Café de spécialité', href: '#specialite' },
     { name: 'Blog', href: '#blog' },
     { name: 'À propos', href: '#apropos' },
+    { name: 'Plan du site', href: '#plan-du-site' },
     { name: 'Contact', href: '#contact' }
   ];
 
