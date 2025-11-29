@@ -1,4 +1,4 @@
-import { GoogleGenAI, Chat } from "@google/genai";
+import { ChatSession, GoogleGenerativeAI } from "@google/generative-ai";
 
 const SYSTEM_INSTRUCTION = `
 Tu es l’assistant virtuel officiel du site Coffee Maroc, une boutique en ligne dédiée au café de spécialité, aux guides de préparation, et aux conseils pour les amateurs de café. Le site contient plusieurs sections : Accueil, À propos, Blog, Boutique, Café de spécialité, Contact, Mon compte et Panier.
@@ -34,15 +34,21 @@ Ta mission est d’aider les visiteurs du site de manière professionnelle, clai
 - Peut rédiger des descriptions de produits, du contenu blog, des recommandations café, ou guider les utilisateurs.
 `;
 
-let chatSession: Chat | null = null;
+let chatSession: ChatSession | null = null;
 
-export const getChatSession = (): Chat => {
+export const getChatSession = (): ChatSession => {
   if (!chatSession) {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-    chatSession = ai.chats.create({
-      model: 'gemini-2.5-flash',
-      config: {
-        systemInstruction: SYSTEM_INSTRUCTION,
+    const ai = new GoogleGenerativeAI(
+      process.env.API_KEY || import.meta.env.VITE_API_KEY
+    );
+
+    const model = ai.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction: SYSTEM_INSTRUCTION,
+    });
+
+    chatSession = model.startChat({
+      generationConfig: {
         temperature: 0.7, // A balance between creativity and sticking to facts
       },
     });
