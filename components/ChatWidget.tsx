@@ -42,8 +42,8 @@ const ChatWidget: React.FC = () => {
 
     try {
       const chat = getChatSession();
-      const result = await chat.sendMessage({ message: userMessage.text });
-      const responseText = result.text;
+      const result = await chat.sendMessage(userMessage.text);
+      const responseText = result.response.text();
 
       const botMessage: Message = {
         id: (Date.now() + 1).toString(),
